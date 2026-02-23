@@ -107,7 +107,7 @@ ffmpeg -version
 ## Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/IqraSarwar/Media-Converter-Pro.git
+git clone https://github.com/Ahmad-beast/mkv-to-mp4
 cd Media-Converter-Pro
 ```
 
