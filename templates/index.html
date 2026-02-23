@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Media Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+        .drag-active { border-color: #0071e3; background-color: rgba(0, 113, 227, 0.05); }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right .7rem top 50%; background-size: .65rem auto;
+        }
+        @keyframes progress-bar-stripes { from { background-position: 2rem 0; } to { background-position: 0 0; } }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+
+    <div class="glass-panel p-8 rounded-[32px] w-full max-w-2xl text-center transition-all">
+        
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Media Converter Pro</h1>
+            <p class="text-gray-500 mt-2">Convert, compress, and resize your media files.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-6 text-left">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1 ml-1">Output Format</label>
+                <select id="formatSelect" class="w-full bg-gray-50 border border-gray-200 text-gray-700 py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0071e3] transition-all">
+                    <option value="mp4">MP4 (Universal & LCD/TV)</option>
+                    <option value="mp3">MP3 (Audio Only)</option>
+                    <option value="avi">AVI (Windows Standard)</option>
+                    <option value="mov">MOV (Apple QuickTime)</option>
+                    <option value="webm">WEBM (Web Optimized)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1 ml-1">Video Quality</label>
+                <select id="resolutionSelect" class="w-full bg-gray-50 border border-gray-200 text-gray-700 py-3 px-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0071e3] transition-all">
+                    <option value="original">Original (Fastest)</option>
+                    <option value="1080p">1080p (High Quality)</option>
+                    <option value="720p">720p (Good for LCD/TV)</option>
+                    <option value="480p">480p (Smallest File)</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-3xl p-10 transition-all duration-300 relative cursor-pointer hover:border-[#0071e3] hover:bg-blue-50/50 mt-4">
+            <input type="file" id="fileInput" multiple accept=".mkv,.mp4,.avi,.mov,.webm" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+            <svg class="mx-auto h-12 w-12 text-[#0071e3] opacity-70 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p class="text-lg text-gray-700 font-medium">Drag & drop your files here</p>
+        </div>
+
+        <div id="fileList" class="mt-6 text-left space-y-2 hidden">
+            <ul id="fileItems" class="text-sm text-gray-700 font-medium max-h-40 overflow-y-auto pr-2"></ul>
+        </div>
+
+        <button id="convertBtn" class="mt-6 w-full bg-[#0071e3] hover:bg-[#005bb5] text-white font-semibold py-4 px-6 rounded-2xl shadow-lg transition-all duration-300 hidden">
+            Start Processing
+        </button>
+
+        <div id="progressUi" class="mt-8 hidden">
+            <div class="flex justify-between items-end text-sm font-medium text-gray-700 mb-2 px-1">
+                <span id="progressText">Starting...</span>
+                <span id="progressPercentage" class="text-2xl font-bold text-[#0071e3]">0%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+                <div id="progressBar" class="bg-[#0071e3] h-4 rounded-full w-0 relative overflow-hidden transition-all duration-300">
+                    <div class="absolute inset-0" style="background-image: linear-gradient(45deg, rgba(255,255,255,0.25) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.25) 75%, transparent 75%, transparent); background-size: 2rem 2rem; animation: progress-bar-stripes 1s linear infinite;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultsSection" class="mt-8 text-left hidden border-t border-gray-200 pt-6">
+            <h3 class="text-lg font-bold text-gray-900 mb-4">🎉 Conversion Complete!</h3>
+            <div id="downloadLinks" class="space-y-3"></div>
+            <button onclick="location.reload()" class="mt-6 text-[#0071e3] font-medium text-sm hover:underline w-full text-center p-2">
+                Convert more files
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const fileItems = document.getElementById('fileItems');
+        const convertBtn = document.getElementById('convertBtn');
+        const progressUi = document.getElementById('progressUi');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercentage = document.getElementById('progressPercentage');
+        const progressText = document.getElementById('progressText');
+        const resultsSection = document.getElementById('resultsSection');
+        const downloadLinks = document.getElementById('downloadLinks');
+        const formatSelect = document.getElementById('formatSelect');
+        const resolutionSelect = document.getElementById('resolutionSelect');
+
+        let selectedFiles = [];
+
+        formatSelect.addEventListener('change', (e) => {
+            if(e.target.value === 'mp3') {
+                resolutionSelect.disabled = true; resolutionSelect.classList.add('opacity-50');
+            } else {
+                resolutionSelect.disabled = false; resolutionSelect.classList.remove('opacity-50');
+            }
+        });
+
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-active'); });
+        dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('drag-active'); });
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('drag-active'); handleFiles(e.dataTransfer.files); });
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleFiles(files) {
+            selectedFiles = Array.from(files);
+            if (selectedFiles.length > 0) {
+                fileList.classList.remove('hidden'); convertBtn.classList.remove('hidden'); fileItems.innerHTML = '';
+                selectedFiles.forEach(file => {
+                    const li = document.createElement('li');
+                    li.className = 'bg-white p-3 rounded-xl border border-gray-100 flex items-center justify-between mb-2 shadow-sm';
+                    li.innerHTML = `<span class="truncate pr-4">📄 ${file.name}</span> <span class="text-xs text-gray-400 whitespace-nowrap">${(file.size / (1024*1024)).toFixed(1)} MB</span>`;
+                    fileItems.appendChild(li);
+                });
+            }
+        }
+
+        // Helper function for unique ID
+        function generateUUID() {
+            return crypto.randomUUID ? crypto.randomUUID() : 'file-' + Math.random().toString(36).substr(2, 9);
+        }
+
+        convertBtn.addEventListener('click', async () => {
+            if (selectedFiles.length === 0) return;
+
+            convertBtn.classList.add('hidden'); dropZone.classList.add('hidden');
+            document.querySelector('.grid').classList.add('hidden'); fileList.classList.add('hidden');
+            progressUi.classList.remove('hidden'); resultsSection.classList.add('hidden');
+            downloadLinks.innerHTML = ''; 
+            
+            const format = formatSelect.value;
+            const resolution = resolutionSelect.value;
+
+            // Process files one by one to show accurate progress for each
+            for (let i = 0; i < selectedFiles.length; i++) {
+                let file = selectedFiles[i];
+                let fileId = generateUUID(); 
+                
+                progressText.innerText = `Processing (${i+1}/${selectedFiles.length}): ${file.name}`;
+                progressBar.style.width = '0%';
+                progressPercentage.innerText = '0%';
+                
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('file_id', fileId);
+                formData.append('format', format);
+                formData.append('resolution', resolution);
+                
+                // Har aadhe second baad server se real percentage poochna (Polling)
+                let progressInterval = setInterval(async () => {
+                    try {
+                        let res = await fetch(`/progress/${fileId}`);
+                        let data = await res.json();
+                        let p = data.percentage;
+                        if (p > 0) {
+                            progressBar.style.width = `${p}%`;
+                            progressPercentage.innerText = `${p}%`;
+                        }
+                    } catch(e) {} // Ignore minor network errors during polling
+                }, 500);
+
+                // Asal conversion shuru karna
+                try {
+                    const response = await fetch('/convert', { method: 'POST', body: formData });
+                    const data = await response.json();
+                    
+                    clearInterval(progressInterval);
+                    progressBar.style.width = '100%';
+                    progressPercentage.innerText = '100%';
+                    
+                    const div = document.createElement('div');
+                    if (data.status === 'success') {
+                        div.innerHTML = `
+                            <div class="flex items-center justify-between bg-green-50 border border-green-200 p-4 rounded-xl shadow-sm">
+                                <div class="truncate pr-4 font-medium text-green-900">${data.converted}</div>
+                                <a href="/download/${data.download_id}" class="shrink-0 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                                    Download ↓
+                                </a>
+                            </div>`;
+                    } else {
+                        div.innerHTML = `<div class="p-4 bg-red-50 text-red-600 border border-red-200 rounded-xl text-sm font-medium">Failed: ${file.name}</div>`;
+                    }
+                    downloadLinks.appendChild(div);
+                } catch (error) {
+                    clearInterval(progressInterval);
+                    alert(`Error processing ${file.name}`);
+                }
+            }
+            
+            // Sab files mukammal hone ke baad
+            progressUi.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
