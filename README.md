@@ -1,123 +1,207 @@
 # 🚀 Media Converter Pro
 
-A blazing-fast, modern, and locally hosted media converter application built with Python (Flask) and FFmpeg. Featuring a beautiful Apple iOS-style glassmorphism UI, real-time progress tracking, and hardware acceleration for Mac users.
-
-## ✨ Features
-* **Format Conversion:** Convert MKV, AVI, MOV, and WEBM to standard MP4, or extract audio directly to MP3.
-* **Smart Compression:** Resize videos to 1080p, 720p, or 480p to save space.
-* **Real-Time Progress:** Live percentage tracking using FFmpeg background polling.
-* **Apple Hardware Acceleration:** Utilizes Mac's native `h264_videotoolbox` for 5x-10x faster encoding speeds.
-* **Batch Processing:** Drag & Drop multiple files and convert them simultaneously.
-* **Premium UI:** Clean, responsive, and modern Glassmorphism design built with Tailwind CSS.
+A blazing-fast, modern, and locally hosted media converter application built with Python (Flask) and FFmpeg. Featuring a beautiful Apple iOS-style glassmorphism UI, real-time progress tracking, and hardware acceleration support for both macOS and Windows.
 
 ---
 
-## 🛠️ Prerequisites
-
-Before you begin, ensure you have the following installed on your machine:
-
-**1. Python (3.x or higher)**
-* **Mac/Windows:** Download and install from [python.org](https://www.python.org/downloads/).
-* *Note for Windows users:* Make sure to check the box **"Add Python to PATH"** during installation.
-
-**2. FFmpeg (Core Engine)**
-* **Mac:** The easiest way to install is via Homebrew. Open your terminal and run:
-  ```bash
-  brew install ffmpeg
-  (If you don't have Homebrew, install it first from brew.sh)
-
-Windows: Download the FFmpeg executable from the official website and add it to your System Environment Variables.
-
-Gemini said
-Zabardast! GitHub par apna project push karna ek behtareen aadat hai. Yeh README.md file aapke project ko bilkul ek professional aur open-source enterprise tool jaisi look degi.
-
-Isme maine Python install karne se le kar, FFmpeg setup, cloning, aur app run karne tak ka har ek step detail mein likh diya hai. Aap is code ko copy kar ke apne GitHub repository mein README.md ke naam se save kar lein:
-
-Markdown
-# 🚀 Media Converter Pro
-
-A blazing-fast, modern, and locally hosted media converter application built with Python (Flask) and FFmpeg. Featuring a beautiful Apple iOS-style glassmorphism UI, real-time progress tracking, and hardware acceleration for Mac users.
-
 ## ✨ Features
-* **Format Conversion:** Convert MKV, AVI, MOV, and WEBM to standard MP4, or extract audio directly to MP3.
-* **Smart Compression:** Resize videos to 1080p, 720p, or 480p to save space.
-* **Real-Time Progress:** Live percentage tracking using FFmpeg background polling.
-* **Apple Hardware Acceleration:** Utilizes Mac's native `h264_videotoolbox` for 5x-10x faster encoding speeds.
-* **Batch Processing:** Drag & Drop multiple files and convert them simultaneously.
-* **Premium UI:** Clean, responsive, and modern Glassmorphism design built with Tailwind CSS.
+
+- **Format Conversion:** Convert MKV, AVI, MOV, and WEBM to standard MP4, or extract audio directly to MP3.
+- **Smart Compression:** Resize videos to 1080p, 720p, or 480p to optimize file size without losing significant quality.
+- **Real-Time Progress:** Live percentage tracking using FFmpeg background polling.
+- **Hardware Acceleration:** Supports macOS `h264_videotoolbox` and Windows encoders (NVENC/AMF).
+- **Batch Processing:** Drag & Drop multiple files and convert them seamlessly.
+- **Premium UI:** Clean, responsive, modern Glassmorphism design built with Tailwind CSS.
 
 ---
 
-## 🛠️ Prerequisites
+# 🛠️ Prerequisites
 
-Before you begin, ensure you have the following installed on your machine:
+Before you begin, ensure you have **Python** and **FFmpeg** installed on your machine.
 
-**1. Python (3.x or higher)**
-* **Mac/Windows:** Download and install from [python.org](https://www.python.org/downloads/).
-* *Note for Windows users:* Make sure to check the box **"Add Python to PATH"** during installation.
+---
 
-**2. FFmpeg (Core Engine)**
-* **Mac:** The easiest way to install is via Homebrew. Open your terminal and run:
-  ```bash
-  brew install ffmpeg
-(If you don't have Homebrew, install it first from brew.sh)
+# 🪟 For Windows Users
 
-Windows: Download the FFmpeg executable from the official website and add it to your System Environment Variables.
+## 1️⃣ Install Python (3.x or higher)
 
-🚀 Installation & Setup
-Step 1: Clone the Repository
-Open your terminal (or command prompt) and run:
+Download from:
+https://www.python.org/downloads/
 
-Bash
-git clone [https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git](https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git)
-cd YOUR-REPO-NAME
-(Note: Replace YOUR-USERNAME and YOUR-REPO-NAME with your actual GitHub details).
+⚠️ During installation, make sure to check:
+**"Add Python to PATH"**
 
-Step 2: Install Required Libraries
-This application uses Flask for the backend. Install it using pip:
+Verify installation:
 
-Bash
+```bash
+python --version
+```
+
+---
+
+## 2️⃣ Install FFmpeg
+
+### Option A (Recommended – Using Winget)
+
+Open Command Prompt or PowerShell as Administrator:
+
+```bash
+winget install ffmpeg
+```
+
+### Option B (Manual Installation)
+
+1. Download FFmpeg from:
+   https://ffmpeg.org/download.html
+2. Extract the files.
+3. Add the `bin` folder to Windows Environment Variables (PATH).
+
+Verify installation:
+
+```bash
+ffmpeg -version
+```
+
+---
+
+# 🍎 For macOS Users
+
+## 1️⃣ Install Python (Latest Recommended)
+
+Using Homebrew:
+
+```bash
+brew install python
+```
+
+Or download from:
+https://www.python.org/downloads/
+
+---
+
+## 2️⃣ Install FFmpeg
+
+Using Homebrew:
+
+```bash
+brew install ffmpeg
+```
+
+Verify installation:
+
+```bash
+ffmpeg -version
+```
+
+---
+
+# 🚀 Installation & Setup
+
+## Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/IqraSarwar/Media-Converter-Pro.git
+cd Media-Converter-Pro
+```
+
+---
+
+## Step 2: Install Required Dependencies
+
+This application uses Flask for the backend server.
+
+```bash
 pip install flask
-💻 How to Run
-Open your terminal and navigate to the project directory.
+```
 
-Start the Flask server by running:
+---
 
-Bash
+# 💻 How to Run
+
+Inside the project directory, start the Flask server:
+
+```bash
 python app.py
-Open your web browser and go to:
+```
+
+Open your browser and go to:
+
 http://127.0.0.1:5000
 
-Drag and drop your media files, select your desired format/quality, and click Start Processing!
+Drag and drop your media files, select format/quality, and click **Start Processing**.
 
-⚠️ Important Note for Windows/Linux Users
-This application is highly optimized for macOS and uses Apple's hardware acceleration (h264_videotoolbox).
+---
 
-If you are running this on Windows or Linux, you need to make a small change in app.py for it to work:
+# ⚙️ Hardware Acceleration Setup (Very Important)
 
-Open app.py in your code editor.
+To achieve 5x–10x faster conversion speeds, configure your encoder inside `app.py`.
 
-Find this line (around line 55):
+Open `app.py` and locate the encoder configuration (around line 55).
 
-Python
+---
+
+## 🍎 For macOS (Apple Silicon / Intel)
+
+```python
 command.extend(['-c:v', 'h264_videotoolbox', '-b:v', '2500k'])
-Change it to standard encoding:
+```
 
-Python
+---
+
+## 🪟 For Windows (CPU Only)
+
+```python
 command.extend(['-c:v', 'libx264', '-preset', 'fast', '-crf', '23'])
-📁 Project Structure
-Plaintext
-├── app.py                  # Main Python Flask application & logic
-├── templates/              
-│   └── index.html          # Frontend UI (Tailwind CSS + JS)
-├── uploads/                # Temporary folder for input files (Auto-generated)
-├── downloads/              # Output folder for converted files (Auto-generated)
-└── progress/               # Temporary logs for real-time progress (Auto-generated)
-🤝 Contributing
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+```
 
+---
 
-### Isme Aapko Kya Change Karna Hai?
-Is file ke andar jahan jahan maine **`YOUR-USERNAME`** aur **`YOUR-REPO-NAME`** likha hai, wahan aapne apne GitHub ka actual username aur repository ka naam likh dena hai (maslan `IqraSarwar/MediaConverterPro`). 
+## 🪟 For Windows (NVIDIA GPU - NVENC)
 
-Agar aap is repo ko GitHub par upload kar lengi, toh doosre developers bhi aapka code use kar sakenge aur iski tareef karenge! Kuch aur help chahiye Git ya GitHub ke hawalay se?
+```python
+command.extend(['-c:v', 'h264_nvenc', '-preset', 'fast', '-b:v', '2500k'])
+```
+
+---
+
+# 📁 Project Structure
+
+```
+Media-Converter-Pro/
+│
+├── app.py                  # Main Flask backend and FFmpeg logic
+├── templates/
+│   └── index.html          # Frontend UI (HTML, JS, Tailwind CSS)
+│
+├── uploads/                # Auto-generated temporary input files
+├── downloads/              # Auto-generated converted files
+└── progress/               # Real-time progress log files
+```
+
+---
+
+# 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+To contribute:
+1. Fork the repository
+2. Create a new branch
+3. Commit your changes
+4. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is open-source and available under the **MIT License**.
+
+---
+
+# 🌟 Support
+
+If you find this project useful, consider giving it a ⭐ on GitHub!
+
+---
+
+**Made with ❤️ using Python, Flask & FFmpeg**
